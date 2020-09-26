@@ -47,7 +47,8 @@ namespace CVars
 	CVarWrapper bxt_autojump_prediction("bxt_autojump_prediction", "0");
 	CVarWrapper bxt_bhopcap_prediction("bxt_bhopcap_prediction", "1");
 	CVarWrapper bxt_show_nodes("bxt_show_nodes", "0");
-	CVarWrapper bxt_show_cine_monsters("bxt_show_monsters", "0");
+	CVarWrapper bxt_show_cine_monsters("bxt_show_cine_monsters", "0");
+	CVarWrapper bxt_show_routes("bxt_show_routes", "0");
 	CVarWrapper bxt_show_custom_triggers("bxt_show_custom_triggers", "1");
 	CVarWrapper bxt_wallhack("bxt_wallhack", "0");
 	CVarWrapper bxt_wallhack_additive("bxt_wallhack_additive", "0");
@@ -148,6 +149,7 @@ namespace CVars
 		&bxt_bhopcap_prediction,
 		&bxt_show_nodes,
 		&bxt_show_cine_monsters,
+		&bxt_show_routes,
 		&bxt_show_pickup_bbox,
 		&bxt_show_custom_triggers,
 		&bxt_wallhack,
