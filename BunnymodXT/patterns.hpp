@@ -391,6 +391,16 @@ namespace patterns
 			"HL-SteamPipe",
 			"C7 05 ?? ?? ?? ?? 01 00 00 00 5E 5B"
 		);
+
+		PATTERNS(CSoundEnt__ActiveList,
+			"HL-SteamPipe",
+			"A1 ?? ?? ?? ?? 85 C0 75 04 83 C8 FF C3 8B 40 58 C3"
+		);
+
+		PATTERNS(CSoundEnt__SoundPointerForIndex,
+			"HL-SteamPipe",
+			"8B 0D ?? ?? ?? ?? 85 C9 75 03 33 C0 C3 8B 44 24 04 83 F8 3F 7E 13 68 ?? ?? ?? ?? 6A 01 FF 15 ?? ?? ?? ??"
+		);
 	}
 
 	namespace shared

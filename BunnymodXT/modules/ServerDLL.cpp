@@ -170,6 +170,8 @@ void ServerDLL::Clear()
 	ORIG_CGraph__InitGraph_Linux = nullptr;
 	ORIG_CBasePlayer__CheatImpulseCommands = nullptr;
 	ORIG_CBasePlayer__CheatImpulseCommands_Linux = nullptr;
+	ORIG_CSoundEnt__ActiveList = nullptr;
+	ORIG_CSoundEnt__SoundPointerForIndex = nullptr;
 	ppmove = nullptr;
 	offPlayerIndex = 0;
 	offOldbuttons = 0;
@@ -387,6 +389,9 @@ void ServerDLL::FindStuff()
 			}
 		});
 	auto fCBasePlayer__CheatImpulseCommands = FindAsync(ORIG_CBasePlayer__CheatImpulseCommands, patterns::server::CBasePlayer__CheatImpulseCommands);
+
+	auto fCSoundEnt__ActiveList = FindAsync(ORIG_CSoundEnt__ActiveList, patterns::server::CSoundEnt__ActiveList);
+	auto fCSoundEnt__SoundPointerForIndex = FindAsync(ORIG_CSoundEnt__SoundPointerForIndex, patterns::server::CSoundEnt__SoundPointerForIndex);
 
 	auto fCGraph__InitGraph = FindAsync(
 		ORIG_CGraph__InitGraph,
@@ -622,6 +627,26 @@ void ServerDLL::FindStuff()
 			} else {
 				EngineDevWarning("[server dll] Could not find CBasePlayer::CheatImpulseCommands.\n");
 			}
+		}
+	}
+
+	{
+		auto pattern = fCSoundEnt__ActiveList.get();
+		if (ORIG_CSoundEnt__ActiveList) {
+			EngineDevMsg("[server dll] Found CSoundEnt::ActiveList at %p (using the %s pattern).\n", ORIG_CSoundEnt__ActiveList, pattern->name());
+		} else {
+			// Linux
+			EngineDevWarning("[server dll] Could not find CSoundEnt::ActiveList.\n");
+		}
+	}
+
+	{
+		auto pattern = fCSoundEnt__SoundPointerForIndex.get();
+		if (ORIG_CSoundEnt__SoundPointerForIndex) {
+			EngineDevMsg("[server dll] Found CSoundEnt::SoundPointerForIndex at %p (using the %s pattern).\n", ORIG_CSoundEnt__SoundPointerForIndex, pattern->name());
+		} else {
+			// TODO: linux
+			EngineDevWarning("[server dll] Could not find CSoundEnt::SoundPointerForIndex.\n");
 		}
 	}
 
@@ -1781,6 +1806,28 @@ std::vector<std::vector<Vector>> ServerDLL::GetMonsterRoutes() const
 	}
 
 	return routes;
+}
+
+std::vector<SoundItem> ServerDLL::GetSounds() const
+{
+	std::vector<SoundItem> sounds;
+	int iSound = ORIG_CSoundEnt__ActiveList();
+	while (iSound != -1) {
+		uintptr_t currentSound = reinterpret_cast<uintptr_t>(ORIG_CSoundEnt__SoundPointerForIndex(iSound));
+		if (!currentSound) {
+			break;
+		}
+
+		const Vector origin = *reinterpret_cast<Vector*>(currentSound + 0x0);
+		sounds.emplace_back(SoundItem{
+			origin,
+			*reinterpret_cast<int*>(currentSound + 12),
+			*reinterpret_cast<int*>(currentSound + 16),
+			*reinterpret_cast<float*>(currentSound + 20),
+		});
+		iSound = *reinterpret_cast<int*>(currentSound + 6 * 4);
+	}
+	return sounds;
 }
 
 TraceResult ServerDLL::TraceLine(const float v1[3], const float v2[3], int fNoMonsters, edict_t *pentToSkip) const
