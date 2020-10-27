@@ -149,7 +149,6 @@ namespace CVars
 	extern CVarWrapper bxt_show_hidden_entities;
 	extern CVarWrapper bxt_show_triggers_legacy;
 	extern CVarWrapper bxt_show_pickup_bbox;
-	extern CVarWrapper bxt_disable_autosave;
 
 	// Clientside CVars
 	extern CVarWrapper bxt_autojump_prediction;
@@ -216,6 +215,12 @@ namespace CVars
 	extern CVarWrapper bxt_hud_entities;
 	extern CVarWrapper bxt_hud_entities_offset;
 	extern CVarWrapper bxt_hud_entities_anchor;
+
+	extern CVarWrapper cl_crosshair_size;
+
+	extern CVarWrapper cl_crosshair_color_r;
+	extern CVarWrapper cl_crosshair_color_g;
+	extern CVarWrapper cl_crosshair_color_b;
 
 	extern const std::vector<CVarWrapper*> allCVars;
 }

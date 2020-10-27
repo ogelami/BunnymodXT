@@ -493,6 +493,10 @@ void ClientDLL::RegisterCVarsAndCommands()
 		REG(bxt_hud_entities);
 		REG(bxt_hud_entities_offset);
 		REG(bxt_hud_entities_anchor);
+		REG(cl_crosshair_size);
+		REG(cl_crosshair_color_r);
+		REG(cl_crosshair_color_g);
+		REG(cl_crosshair_color_b);
 	}
 	#undef REG
 }

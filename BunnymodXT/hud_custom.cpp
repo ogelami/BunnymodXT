@@ -895,10 +895,87 @@ namespace CustomHud
 
 				if (!(fps < 99.6f && fps > 99.0f))
 					badFrames = 0;
-			}
+			} 
 		}
 
 		lastTime = flTime;
+	}
+
+	static void DrawCrosshair()
+	{
+		glDisable(GL_TEXTURE_2D);
+
+		float crosshairSize = CVars::cl_crosshair_size.GetFloat();
+		float r = CVars::cl_crosshair_color_r.GetFloat(),
+			g = CVars::cl_crosshair_color_g.GetFloat(),
+			b = CVars::cl_crosshair_color_b.GetFloat();
+
+		//Set our attributes
+		glPointSize(crosshairSize);
+		glColor4f(r, g, b, 1.f);
+
+		//Draw our point
+		glBegin(GL_POINTS);
+		glVertex2f(((float)si.iWidth / 2), ((float)si.iHeight / 2));
+		glEnd();
+
+		glEnable(GL_TEXTURE_2D);
+	}
+
+	static void DrawGuideCross()
+	{
+		glDisable(GL_TEXTURE_2D);
+
+		float yaw = abs(player.viewangles[1] - 135.8f) * 3.f;
+		double targetX = 1465.87f,
+			targetY = 533.125f;
+
+		double floss, flux;
+
+		float d = sqrt(pow(player.origin[0] - targetX, 2) + pow(player.origin[1] - targetY, 2)) * 10.f;
+		constexpr float M_DEG2RAD = float(M_PI) / 180.f;
+
+		//if (x < 1.3f && y < 3.f)
+		if(d < 3)
+		{
+			glLineWidth(2.3f);
+
+			glBegin(GL_LINES);
+			glVertex2f(((float)si.iWidth / 2) - yaw, ((float)si.iHeight / 2) + 2);
+			glVertex2f(((float)si.iWidth / 2) + yaw, ((float)si.iHeight / 2) + 2);
+			glEnd();
+		}
+		else
+		{
+			/*float xie = sin((player.viewangles[1] + 90.f) * M_DEG2RAD) * d + ((float)si.iWidth / 2),
+				yie = cos((player.viewangles[1] + 90.f) * M_DEG2RAD) * d + ((float)si.iHeight / 2);*/
+			
+			floss = atan2(targetY - player.origin[1], targetX - player.origin[0]);
+			flux = atan2(sin(player.viewangles[1]) - targetY - player.origin[1], cos(player.viewangles[1]) - targetX - player.origin[0]);
+
+			float xie = sin(floss - flux) * d + ((float)si.iWidth / 2),
+				yie = cos(floss - flux) * d + ((float)si.iHeight / 2);
+
+			glColor4f(1.f, 0.f, 0.f, 1.f);
+			glPointSize(2.3f);
+
+			glBegin(GL_POINTS);
+			glVertex2f(xie, yie);
+			glEnd();
+		}
+
+		std::ostringstream out;
+		out.setf(std::ios::fixed);
+		out.precision(precision);
+		out << "QQ:\n"
+			<< "d: " << d << "\n"
+			<< "q: " << floss - flux << "\n"
+			<< "va: " << player.viewangles[1] << "\n"
+			<< "ya: " << yaw;
+
+		DrawMultilineString(111, 111, out.str());
+
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	static void DrawCollisionDepthMap(float flTime)
@@ -1207,6 +1284,8 @@ namespace CustomHud
 		DrawSelfgaussInfo(flTime);
 		DrawVisibleLandmarks(flTime);
 		DrawNihilanthInfo(flTime);
+		DrawCrosshair();
+		DrawGuideCross();
 		DrawIncorrectFPSIndicator(flTime);
 		DrawCollisionDepthMap(flTime);
 		DrawTASEditorStatus();

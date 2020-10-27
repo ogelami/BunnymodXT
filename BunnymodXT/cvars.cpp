@@ -42,7 +42,6 @@ namespace CVars
 	CVarWrapper bxt_show_hidden_entities("bxt_show_hidden_entities", "0");
 	CVarWrapper bxt_show_triggers_legacy("bxt_show_triggers_legacy", "0");
 	CVarWrapper bxt_show_pickup_bbox("bxt_show_pickup_bbox", "0");
-	CVarWrapper bxt_disable_autosave("bxt_disable_autosave", "0");
 
 	// Clientside CVars
 	CVarWrapper bxt_autojump_prediction("bxt_autojump_prediction", "0");
@@ -109,6 +108,12 @@ namespace CVars
 	CVarWrapper bxt_hud_entities("bxt_hud_entities", "0");
 	CVarWrapper bxt_hud_entities_offset("bxt_hud_entities_offset", "");
 	CVarWrapper bxt_hud_entities_anchor("bxt_hud_entities_anchor", "0 0");
+	
+	CVarWrapper cl_crosshair_size("cl_crosshair_size", "2.0");
+
+	CVarWrapper cl_crosshair_color_r("cl_crosshair_color_r", "0.0");
+	CVarWrapper cl_crosshair_color_g("cl_crosshair_color_g", "1.0");
+	CVarWrapper cl_crosshair_color_b("cl_crosshair_color_b", "0.0");
 
 	const std::vector<CVarWrapper*> allCVars =
 	{
@@ -148,7 +153,6 @@ namespace CVars
 		&bxt_bhopcap_prediction,
 		&bxt_show_nodes,
 		&bxt_show_pickup_bbox,
-		&bxt_disable_autosave,
 		&bxt_show_custom_triggers,
 		&bxt_wallhack,
 		&bxt_wallhack_additive,
@@ -210,6 +214,10 @@ namespace CVars
 		&bxt_hud_tas_editor_status_anchor,
 		&bxt_hud_entities,
 		&bxt_hud_entities_offset,
-		&bxt_hud_entities_anchor
+		&bxt_hud_entities_anchor,
+		&cl_crosshair_size,
+		&cl_crosshair_color_r,
+		&cl_crosshair_color_g,
+		&cl_crosshair_color_b
 	};
 }
